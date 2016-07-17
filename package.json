@@ -1,0 +1,21 @@
+{
+  "name": "authentication",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node_modules/react-native/packager/packager.sh"
+  },
+  "dependencies": {
+    "firebase": "2.4.2",
+    "parse": "^1.6.9",
+    "parse-react": "^0.5.0",
+    "react-native": "^0.14.2",
+    "react-native-gifted-spinner": "0.0.5"
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.1.5",
+    "eslint": "^1.8.0",
+    "eslint-config-airbnb": "^0.1.0",
+    "eslint-plugin-react": "^3.6.3"
+  }
+}
