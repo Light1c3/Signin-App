@@ -13,6 +13,7 @@ var Button = require('../common/button');
 module.exports = React.createClass({
   getInitialState: function() {
     return {
+      username: '',
       email: '',
       password: '',
       passwordConfirmation: '',
@@ -24,11 +25,18 @@ module.exports = React.createClass({
       <View style={styles.container}>
         <Text>Sign Up</Text>
 
+        <Text style={styles.label}>Username:</Text>
+        <TextInput
+        value={this.state.username}
+        onChangeText={(text) => this.setState({username: text})}
+        style={styles.input} />
+
         <Text style={styles.label}>Email:</Text>
         <TextInput
-          value={this.state.username}
+          value={this.state.email}
           onChangeText={(text) => this.setState({email: text})}
           style={styles.input} />
+
 
         <Text style={styles.label}>Password:</Text>
         <TextInput
@@ -62,7 +70,14 @@ module.exports = React.createClass({
       if (error) {
         return this.setState({errorMessage: 'Error creating user'});
       } else {
-        return console.log("Successfully created user account with uid:", userData.uid);
+        var authData = ref.getAuth();
+        ref.child("users").child(authData.uid).set({
+          provider: authData.provider,
+          name: userName
+        });
+        console.log("Successfully created user account with uid:", userData.uid);
+        return this.props.navigator.pop({name: 'signin'});
+
       }
     });
   },

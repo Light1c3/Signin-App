@@ -47,10 +47,9 @@ module.exports = React.createClass({
   onSignupPress: function() {
     this.props.navigator.push({name: 'signup'});
   },
-  loginsuccess: function() {
-  },
   onPress: function() {
     var ref = new Firebase("https://reactapplogin.firebaseio.com");
+    var self = this;
     ref.authWithPassword({
       email    : this.state.email,
       password : this.state.password
@@ -59,7 +58,7 @@ module.exports = React.createClass({
         console.log("Login Failed!", error);
       } else {
         console.log("Authenticated successfully with payload:", authData);
-        this.props.navigator.immediatelyResetRouteStack({name: 'tweets'});
+        self.props.navigator.push({name: 'tweets'});
       }
     });
   }
