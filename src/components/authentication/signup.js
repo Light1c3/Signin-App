@@ -5,7 +5,8 @@ var {
   Text,
   View,
   StyleSheet,
-  TextInput
+  TextInput,
+  ToastAndroid
 } = React;
 
 var Button = require('../common/button');
@@ -52,7 +53,7 @@ module.exports = React.createClass({
           onChangeText={(text) => this.setState({passwordConfirmation: text})}
           style={styles.input} />
 
-        <Text style={styles.label}>{this.state.errorMessage}</Text>
+        <Text style={styles.errorLabel}>{this.state.errorMessage}</Text>
         <Button text={'Signup'} onPress={this.onSignUpPress} />
         <Button text={'I have an account...'} onPress={this.onSigninPress} />
       </View>
@@ -62,6 +63,7 @@ module.exports = React.createClass({
     if (this.state.password !== this.state.passwordConfirmation ) {
       return this.setState({errorMessage: 'Your passwords do not match'});
     }
+    var self = this;
     let ref = new Firebase("https://reactapplogin.firebaseio.com");
     ref.createUser({
       email    : this.state.email,
@@ -70,13 +72,9 @@ module.exports = React.createClass({
       if (error) {
         return this.setState({errorMessage: 'Error creating user'});
       } else {
-        var authData = ref.getAuth();
-        ref.child("users").child(authData.uid).set({
-          provider: authData.provider,
-          name: userName
-        });
         console.log("Successfully created user account with uid:", userData.uid);
-        return this.props.navigator.pop({name: 'signin'});
+        ToastAndroid.show('Account Created', ToastAndroid.SHORT)
+        return self.props.navigator.pop();
 
       }
     });
@@ -95,6 +93,9 @@ var styles = StyleSheet.create({
   },
   label: {
     fontSize: 18
+  },
+  errorLabel: {
+    color: 'red'
   },
   input: {
     padding: 4,

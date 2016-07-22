@@ -38,7 +38,7 @@ module.exports = React.createClass({
           onChangeText={(text) => this.setState({password: text})}
           />
 
-        <Text style={styles.label}>{this.state.errorMessage}</Text>
+        <Text style={styles.errorLabel}>{this.state.errorMessage}</Text>
         <Button text={'Sign In'} onPress={this.onPress} />
         <Button text={'I need an account...'} onPress={this.onSignupPress} />
       </View>
@@ -56,9 +56,10 @@ module.exports = React.createClass({
     }, function(error, authData) {
       if (error) {
         console.log("Login Failed!", error);
+        self.setState({errorMessage: 'Please check your credentials and try again'});
       } else {
         console.log("Authenticated successfully with payload:", authData);
-        self.props.navigator.push({name: 'tweets'});
+        return self.props.navigator.immediatelyResetRouteStack([{name: 'homepage'}]);
       }
     });
   }
@@ -82,5 +83,9 @@ var styles = StyleSheet.create({
   },
   label: {
     fontSize: 18
+  },
+  errorLabel: {
+    fontSize: 12,
+    color: 'red'
   }
 });
