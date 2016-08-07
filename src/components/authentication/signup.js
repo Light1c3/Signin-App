@@ -24,8 +24,6 @@ module.exports = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <Text>Sign Up</Text>
-
         <Text style={styles.label}>Username:</Text>
         <TextInput
         value={this.state.username}
@@ -68,11 +66,14 @@ module.exports = React.createClass({
     ref.createUser({
       email    : this.state.email,
       password : this.state.password
-    }, function(error, userData) {
+    }, function(error, authData) {
       if (error) {
         return this.setState({errorMessage: 'Error creating user'});
       } else {
-        console.log("Successfully created user account with uid:", userData.uid);
+        ref.child("users").child(authData.uid).set({
+          username: self.state.username
+         });
+        console.log("Successfully created user account with uid:", authData.uid);
         ToastAndroid.show('Account Created', ToastAndroid.SHORT)
         return self.props.navigator.pop();
 
